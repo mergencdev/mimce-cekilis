@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import logoMimce from './logo_mimce.png';
 
 type Language = 'tr' | 'en';
 
@@ -53,21 +54,23 @@ function App() {
     <div className="App">
       <div className="header">
         <div className="logo">
-          <div className="logo-icon">|||</div>
+          <img src={logoMimce} alt="MIMCE Logo" className="logo-image" />
           <div className="logo-text">{t.raffle}</div>
         </div>
         <div className="language-selector">
           <button 
-            className={`lang-btn ${language === 'tr' ? 'active' : ''}`}
+            className={`flag-btn ${language === 'tr' ? 'active' : ''}`}
             onClick={() => setLanguage('tr')}
+            title="Türkçe"
           >
-            TR
+            🇹🇷
           </button>
           <button 
-            className={`lang-btn ${language === 'en' ? 'active' : ''}`}
+            className={`flag-btn ${language === 'en' ? 'active' : ''}`}
             onClick={() => setLanguage('en')}
+            title="English"
           >
-            EN
+            🇺🇸
           </button>
         </div>
       </div>

@@ -26,7 +26,13 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+}
+
+.logo-image {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
 }
 
 .language-selector {
@@ -34,27 +40,32 @@
   gap: 8px;
 }
 
-.lang-btn {
-  padding: 8px 16px;
+.flag-btn {
+  padding: 8px 12px;
   background: rgba(30, 35, 50, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: #a0a9c0;
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-size: 20px;
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
 }
 
-.lang-btn:hover {
+.flag-btn:hover {
   background: rgba(30, 35, 50, 1);
   border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
 }
 
-.lang-btn.active {
+.flag-btn.active {
   background: #3b82f6;
   border-color: #3b82f6;
-  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .logo-icon {
