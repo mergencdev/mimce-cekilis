@@ -1,10 +1,38 @@
 import React, { useState } from 'react';
 import './App.css';
 
+type Language = 'tr' | 'en';
+
+const translations = {
+  tr: {
+    lotteryName: 'Çekiliş İsmi',
+    lotteryNamePlaceholder: 'Proje Adı / Etkinlik ID',
+    participants: 'Katılımcılar',
+    participantsPlaceholder: 'Her satıra bir katılımcı ID girin',
+    initiateRaffle: 'ÇEKİLİŞİ BAŞLAT',
+    winner: 'Kazanan',
+    noParticipantsError: 'Lütfen en az bir katılımcı girin!',
+    raffle: 'ÇEKİLİŞ'
+  },
+  en: {
+    lotteryName: 'Lottery Name',
+    lotteryNamePlaceholder: 'Project Name / Event ID',
+    participants: 'Participants',
+    participantsPlaceholder: 'Enter one participant ID per line',
+    initiateRaffle: 'INITIATE RAFFLE',
+    winner: 'Winner',
+    noParticipantsError: 'Please enter at least one participant!',
+    raffle: 'RAFFLE'
+  }
+};
+
 function App() {
+  const [language, setLanguage] = useState<Language>('tr');
   const [lotteryName, setLotteryName] = useState('');
   const [participants, setParticipants] = useState('');
   const [winner, setWinner] = useState<string | null>(null);
+
+  const t = translations[language];
 
   const handleRaffle = () => {
     const participantList = participants
@@ -13,7 +41,7 @@ function App() {
       .filter(p => p.length > 0);
     
     if (participantList.length === 0) {
-      alert('Lütfen en az bir katılımcı girin!');
+      alert(t.noParticipantsError);
       return;
     }
     
@@ -26,39 +54,53 @@ function App() {
       <div className="header">
         <div className="logo">
           <div className="logo-icon">|||</div>
-          <div className="logo-text">RAFFLE</div>
+          <div className="logo-text">{t.raffle}</div>
+        </div>
+        <div className="language-selector">
+          <button 
+            className={`lang-btn ${language === 'tr' ? 'active' : ''}`}
+            onClick={() => setLanguage('tr')}
+          >
+            TR
+          </button>
+          <button 
+            className={`lang-btn ${language === 'en' ? 'active' : ''}`}
+            onClick={() => setLanguage('en')}
+          >
+            EN
+          </button>
         </div>
       </div>
       
       <div className="main-card">
         <div className="form-group">
-          <label className="form-label">Lottery Name</label>
+          <label className="form-label">{t.lotteryName}</label>
           <input
             type="text"
             className="form-input"
-            placeholder="Project Name / Event ID"
+            placeholder={t.lotteryNamePlaceholder}
             value={lotteryName}
             onChange={(e) => setLotteryName(e.target.value)}
           />
         </div>
         
         <div className="form-group">
-          <label className="form-label">Participants</label>
+          <label className="form-label">{t.participants}</label>
           <textarea
             className="form-textarea"
-            placeholder="Enter one participant ID per line"
+            placeholder={t.participantsPlaceholder}
             value={participants}
             onChange={(e) => setParticipants(e.target.value)}
           />
         </div>
         
         <button className="raffle-button" onClick={handleRaffle}>
-          INITIATE RAFFLE
+          {t.initiateRaffle}
         </button>
         
         {winner && (
           <div className="winner-display">
-            <h2>Kazanan: {winner}</h2>
+            <h2>{t.winner}: {winner}</h2>
           </div>
         )}
       </div>

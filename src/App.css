@@ -16,12 +16,45 @@
 
 .header {
   margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.language-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.lang-btn {
+  padding: 8px 16px;
+  background: rgba(30, 35, 50, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #a0a9c0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-btn:hover {
+  background: rgba(30, 35, 50, 1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.lang-btn.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
 }
 
 .logo-icon {
