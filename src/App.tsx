@@ -36,6 +36,8 @@ function App() {
   const [lotteryName, setLotteryName] = useState('');
   const [participants, setParticipants] = useState('');
   const [winner, setWinner] = useState<string | null>(null);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [currentDisplay, setCurrentDisplay] = useState<string>('');
 
   const t = translations[language];
 
@@ -50,8 +52,30 @@ function App() {
       return;
     }
     
-    const randomIndex = Math.floor(Math.random() * participantList.length);
-    setWinner(participantList[randomIndex]);
+    setIsSpinning(true);
+    setWinner(null);
+    setCurrentDisplay('');
+    
+    // Animasyon süresi (3 saniye)
+    const animationDuration = 3000;
+    const startTime = Date.now();
+    
+    const spinInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = elapsed / animationDuration;
+      
+      if (progress >= 1) {
+        // Animasyon bitti, kazananı göster
+        clearInterval(spinInterval);
+        const randomIndex = Math.floor(Math.random() * participantList.length);
+        setWinner(participantList[randomIndex]);
+        setIsSpinning(false);
+      } else {
+        // Rastgele isim göster
+        const randomIndex = Math.floor(Math.random() * participantList.length);
+        setCurrentDisplay(participantList[randomIndex]);
+      }
+    }, 100);
   };
 
   return (
@@ -108,13 +132,31 @@ function App() {
           />
         </div>
         
-        <button className="raffle-button" onClick={handleRaffle}>
-          {t.initiateRaffle}
+        <button 
+          className={`raffle-button ${isSpinning ? 'spinning' : ''}`} 
+          onClick={handleRaffle}
+          disabled={isSpinning}
+        >
+          {isSpinning ? '...' : t.initiateRaffle}
         </button>
         
-        {winner && (
-          <div className="winner-display">
-            <h2>{t.winner}: {winner}</h2>
+        {(isSpinning || winner) && (
+          <div className="raffle-display">
+            {isSpinning ? (
+              <div className="spinning-display">
+                <div className="spinning-wheel">
+                  <div className="spinning-text">{currentDisplay}</div>
+                </div>
+                <div className="spinning-label">Çekiliş yapılıyor...</div>
+              </div>
+            ) : winner ? (
+              <div className="winner-display">
+                <div className="winner-crown">👑</div>
+                <h2 className="winner-title">{t.winner}</h2>
+                <div className="winner-name">{winner}</div>
+                <div className="winner-celebration">🎉</div>
+              </div>
+            ) : null}
           </div>
         )}
       </div>
