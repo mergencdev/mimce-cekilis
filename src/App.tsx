@@ -20,7 +20,13 @@ const translations = {
     reservesCount: 'Yedek Sayısı',
     results: 'Sonuçlar',
     winners: 'Kazananlar',
-    reserves: 'Yedekler'
+    reserves: 'Yedekler',
+    history: 'Geçmiş',
+    raffleHistory: 'Çekiliş Geçmişi',
+    date: 'Tarih',
+    lottery: 'Çekiliş',
+    close: 'Kapat',
+    noHistory: 'Henüz çekiliş geçmişi yok'
   },
   en: {
     lotteryName: 'Lottery Name',
@@ -37,9 +43,24 @@ const translations = {
     reservesCount: 'Reserves Count',
     results: 'Results',
     winners: 'Winners',
-    reserves: 'Reserves'
+    reserves: 'Reserves',
+    history: 'History',
+    raffleHistory: 'Raffle History',
+    date: 'Date',
+    lottery: 'Lottery',
+    close: 'Close',
+    noHistory: 'No raffle history yet'
   }
 };
+
+interface RaffleHistory {
+  id: string;
+  date: string;
+  lotteryName: string;
+  winners: string[];
+  reserves: string[];
+  totalParticipants: number;
+}
 
 function App() {
   const [language, setLanguage] = useState<Language>('tr');
@@ -51,6 +72,8 @@ function App() {
   const [reserves, setReserves] = useState<string[]>([]);
   const [isSpinning, setIsSpinning] = useState(false);
   const [currentDisplay, setCurrentDisplay] = useState<string>('');
+  const [showHistory, setShowHistory] = useState(false);
+  const [raffleHistory, setRaffleHistory] = useState<RaffleHistory[]>([]);
   
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -97,6 +120,17 @@ function App() {
         setReserves(selectedReserves);
         setIsSpinning(false);
         
+        // Geçmişe ekle
+        const newHistoryItem: RaffleHistory = {
+          id: Date.now().toString(),
+          date: new Date().toLocaleString('tr-TR'),
+          lotteryName: lotteryName || 'İsimsiz Çekiliş',
+          winners: selectedWinners,
+          reserves: selectedReserves,
+          totalParticipants: participantList.length
+        };
+        setRaffleHistory(prev => [newHistoryItem, ...prev]);
+        
         // Sonuçlar gösterildikten sonra scroll yap
         setTimeout(() => {
           if (resultsRef.current) {
@@ -130,6 +164,13 @@ function App() {
           title="English"
         >
           🇬🇧
+        </button>
+        <button 
+          className="history-btn"
+          onClick={() => setShowHistory(true)}
+          title={t.history}
+        >
+          📋
         </button>
       </div>
       
@@ -266,6 +307,75 @@ function App() {
           </div>
         )}
       </div>
+      
+      {/* History Modal */}
+      {showHistory && (
+        <div className="modal-overlay" onClick={() => setShowHistory(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">{t.raffleHistory}</h2>
+              <button 
+                className="modal-close"
+                onClick={() => setShowHistory(false)}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="modal-body">
+              {raffleHistory.length === 0 ? (
+                <div className="no-history">
+                  <div className="no-history-icon">📋</div>
+                  <p className="no-history-text">{t.noHistory}</p>
+                </div>
+              ) : (
+                <div className="history-list">
+                  {raffleHistory.map((item) => (
+                    <div key={item.id} className="history-item">
+                      <div className="history-header">
+                        <div className="history-date">{item.date}</div>
+                        <div className="history-lottery">{item.lotteryName}</div>
+                      </div>
+                      
+                      <div className="history-details">
+                        <div className="history-participants">
+                          {item.totalParticipants} katılımcı
+                        </div>
+                        
+                        {item.winners.length > 0 && (
+                          <div className="history-winners">
+                            <strong>{t.winners}:</strong>
+                            <div className="history-winner-list">
+                              {item.winners.map((winner, index) => (
+                                <span key={index} className="history-winner">
+                                  {index + 1}. {winner} 👑
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {item.reserves.length > 0 && (
+                          <div className="history-reserves">
+                            <strong>{t.reserves}:</strong>
+                            <div className="history-reserve-list">
+                              {item.reserves.map((reserve, index) => (
+                                <span key={index} className="history-reserve">
+                                  {index + 1}. {reserve}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
