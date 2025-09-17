@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 import logoMimce from './logo_mimce.png';
 
@@ -51,6 +51,8 @@ function App() {
   const [reserves, setReserves] = useState<string[]>([]);
   const [isSpinning, setIsSpinning] = useState(false);
   const [currentDisplay, setCurrentDisplay] = useState<string>('');
+  
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const t = translations[language];
 
@@ -94,6 +96,16 @@ function App() {
         setWinners(selectedWinners);
         setReserves(selectedReserves);
         setIsSpinning(false);
+        
+        // Sonuçlar gösterildikten sonra scroll yap
+        setTimeout(() => {
+          if (resultsRef.current) {
+            resultsRef.current.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        }, 100);
       } else {
         // Rastgele isim göster
         const randomIndex = Math.floor(Math.random() * participantList.length);
@@ -209,7 +221,7 @@ function App() {
         </button>
         
         {(isSpinning || winners.length > 0) && (
-          <div className="raffle-display">
+          <div className="raffle-display" ref={resultsRef}>
             {isSpinning ? (
               <div className="spinning-display">
                 <div className="spinning-wheel">
