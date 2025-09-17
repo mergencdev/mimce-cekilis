@@ -52,26 +52,27 @@ function App() {
 
   return (
     <div className="App">
+      <div className="language-selector-fixed">
+        <button 
+          className={`flag-btn ${language === 'tr' ? 'active' : ''}`}
+          onClick={() => setLanguage('tr')}
+          title="Türkçe"
+        >
+          🇹🇷
+        </button>
+        <button 
+          className={`flag-btn ${language === 'en' ? 'active' : ''}`}
+          onClick={() => setLanguage('en')}
+          title="English"
+        >
+          🇬🇧
+        </button>
+      </div>
+      
       <div className="header">
         <div className="logo">
           <img src={logoMimce} alt="MIMCE Logo" className="logo-image" />
           <div className="logo-text">{t.raffle}</div>
-        </div>
-        <div className="language-selector">
-          <button 
-            className={`flag-btn ${language === 'tr' ? 'active' : ''}`}
-            onClick={() => setLanguage('tr')}
-            title="Türkçe"
-          >
-            🇹🇷
-          </button>
-          <button 
-            className={`flag-btn ${language === 'en' ? 'active' : ''}`}
-            onClick={() => setLanguage('en')}
-            title="English"
-          >
-            🇺🇸
-          </button>
         </div>
       </div>
       
