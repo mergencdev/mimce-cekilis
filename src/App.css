@@ -104,14 +104,45 @@
   margin-bottom: 24px;
 }
 
+.form-label-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 .form-label {
-  display: block;
   color: #a0a9c0;
   font-size: 14px;
   font-weight: 500;
-  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.participant-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.count-label {
+  color: #a0a9c0;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.count-number {
+  color: #3b82f6;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
 .form-input {

@@ -13,7 +13,9 @@ const translations = {
     initiateRaffle: 'ÇEKİLİŞİ BAŞLAT',
     winner: 'Kazanan',
     noParticipantsError: 'Lütfen en az bir katılımcı girin!',
-    raffle: 'ÇEKİLİŞ'
+    raffle: 'ÇEKİLİŞ',
+    participantCount: 'Katılımcı Sayısı',
+    totalParticipants: 'Toplam'
   },
   en: {
     lotteryName: 'Lottery Name',
@@ -23,7 +25,9 @@ const translations = {
     initiateRaffle: 'INITIATE RAFFLE',
     winner: 'Winner',
     noParticipantsError: 'Please enter at least one participant!',
-    raffle: 'RAFFLE'
+    raffle: 'RAFFLE',
+    participantCount: 'Participant Count',
+    totalParticipants: 'Total'
   }
 };
 
@@ -35,12 +39,12 @@ function App() {
 
   const t = translations[language];
 
+  const participantList = participants
+    .split('\n')
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
+
   const handleRaffle = () => {
-    const participantList = participants
-      .split('\n')
-      .map(p => p.trim())
-      .filter(p => p.length > 0);
-    
     if (participantList.length === 0) {
       alert(t.noParticipantsError);
       return;
@@ -89,7 +93,13 @@ function App() {
         </div>
         
         <div className="form-group">
-          <label className="form-label">{t.participants}</label>
+          <div className="form-label-container">
+            <label className="form-label">{t.participants}</label>
+            <div className="participant-count">
+              <span className="count-label">{t.participantCount}:</span>
+              <span className="count-number">{participantList.length}</span>
+            </div>
+          </div>
           <textarea
             className="form-textarea"
             placeholder={t.participantsPlaceholder}
