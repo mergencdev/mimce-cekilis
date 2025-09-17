@@ -188,9 +188,11 @@ function App() {
       </div>
       
       <div className="header">
-        <div className="logo">
-          <img src={logoMimce} alt="MIMCE Logo" className="logo-image" />
-          <div className="logo-text">{t.raffle}</div>
+        <div className="logo-card">
+          <div className="logo">
+            <img src={logoMimce} alt="MIMCE Logo" className="logo-image" />
+            <div className="logo-text">{t.raffle}</div>
+          </div>
         </div>
       </div>
       
