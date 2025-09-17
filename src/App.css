@@ -15,6 +15,16 @@
   position: relative;
 }
 
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+}
+
 .language-selector-fixed {
   position: fixed;
   top: 20px;
@@ -24,6 +34,14 @@
   z-index: 1000;
 }
 
+@media (max-width: 768px) {
+  .language-selector-fixed {
+    top: 15px;
+    right: 15px;
+    gap: 6px;
+  }
+}
+
 .header {
   margin-bottom: 40px;
   display: flex;
@@ -31,6 +49,13 @@
   align-items: center;
   width: 100%;
   max-width: 500px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 20px;
+    max-width: 100%;
+  }
 }
 
 .logo-card {
@@ -47,16 +72,38 @@
   max-width: 500px;
 }
 
+@media (max-width: 768px) {
+  .logo-card {
+    padding: 16px 20px;
+    border-radius: 12px;
+    max-width: 100%;
+  }
+}
+
 .logo {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
+@media (max-width: 768px) {
+  .logo {
+    gap: 12px;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
 .logo-image {
   height: 80px;
   width: auto;
   object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .logo-image {
+    height: 60px;
+  }
 }
 
 .flag-btn {
@@ -73,6 +120,14 @@
   min-width: 48px;
   height: 48px;
   backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+  .flag-btn {
+    min-width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
 }
 
 .flag-btn:hover {
@@ -105,6 +160,14 @@
   backdrop-filter: blur(10px);
 }
 
+@media (max-width: 768px) {
+  .history-btn {
+    min-width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}
+
 .history-btn:hover {
   background: rgba(30, 35, 50, 1);
   border-color: rgba(255, 255, 255, 0.4);
@@ -127,6 +190,13 @@
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 32px;
+    letter-spacing: 3px;
+  }
+}
+
 .main-card {
   background: rgba(45, 55, 75, 0.8);
   backdrop-filter: blur(10px);
@@ -138,8 +208,22 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+@media (max-width: 768px) {
+  .main-card {
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 100%;
+  }
+}
+
 .form-group {
   margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .form-group {
+    margin-bottom: 16px;
+  }
 }
 
 .form-label-container {
@@ -203,6 +287,13 @@
   color: #6b7280;
 }
 
+@media (max-width: 768px) {
+  .form-input {
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+}
+
 .form-textarea {
   width: 100%;
   padding: 12px 16px;
@@ -226,6 +317,14 @@
   color: #6b7280;
 }
 
+@media (max-width: 768px) {
+  .form-textarea {
+    min-height: 100px;
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+}
+
 .raffle-button {
   width: 100%;
   padding: 16px;
@@ -244,6 +343,13 @@
 
 .raffle-button:hover {
   background: #2563eb;
+}
+
+@media (max-width: 768px) {
+  .raffle-button {
+    padding: 14px;
+    font-size: 14px;
+  }
 }
 
 .raffle-button:active {
@@ -321,7 +427,19 @@
   font-weight: bold;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   min-width: 24px;
-  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .count-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  .count-value {
+    font-size: 16px;
+    min-width: 20px;
+  }
 }
 
 .raffle-display {
@@ -398,6 +516,13 @@
   text-align: center;
   animation: winnerGlow 2s ease-in-out;
   box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
+}
+
+@media (max-width: 768px) {
+  .winner-display {
+    padding: 16px;
+    margin-top: 16px;
+  }
 }
 
 .winner-crown {
@@ -481,6 +606,13 @@
   border-radius: 8px;
   padding: 12px 16px;
   transition: all 0.2s;
+}
+
+@media (max-width: 768px) {
+  .winner-item, .reserve-item {
+    padding: 10px 12px;
+    gap: 8px;
+  }
 }
 
 .winner-item {
@@ -580,6 +712,12 @@
   padding: 20px;
 }
 
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+}
+
 .modal-content {
   background: #1a1d29;
   border: 2px solid #3b82f6;
@@ -589,6 +727,14 @@
   max-height: 70vh;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 6px;
+  }
 }
 
 .modal-header {
