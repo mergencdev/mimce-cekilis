@@ -15,7 +15,12 @@ const translations = {
     noParticipantsError: 'Lütfen en az bir katılımcı girin!',
     raffle: 'ÇEKİLİŞ',
     participantCount: 'Katılımcı Sayısı',
-    totalParticipants: 'Toplam'
+    totalParticipants: 'Toplam',
+    winnersCount: 'Kazanan Sayısı',
+    reservesCount: 'Yedek Sayısı',
+    results: 'Sonuçlar',
+    winners: 'Kazananlar',
+    reserves: 'Yedekler'
   },
   en: {
     lotteryName: 'Lottery Name',
@@ -27,7 +32,12 @@ const translations = {
     noParticipantsError: 'Please enter at least one participant!',
     raffle: 'RAFFLE',
     participantCount: 'Participant Count',
-    totalParticipants: 'Total'
+    totalParticipants: 'Total',
+    winnersCount: 'Winners Count',
+    reservesCount: 'Reserves Count',
+    results: 'Results',
+    winners: 'Winners',
+    reserves: 'Reserves'
   }
 };
 
@@ -35,7 +45,10 @@ function App() {
   const [language, setLanguage] = useState<Language>('tr');
   const [lotteryName, setLotteryName] = useState('');
   const [participants, setParticipants] = useState('');
-  const [winner, setWinner] = useState<string | null>(null);
+  const [winnersCount, setWinnersCount] = useState(1);
+  const [reservesCount, setReservesCount] = useState(0);
+  const [winners, setWinners] = useState<string[]>([]);
+  const [reserves, setReserves] = useState<string[]>([]);
   const [isSpinning, setIsSpinning] = useState(false);
   const [currentDisplay, setCurrentDisplay] = useState<string>('');
 
@@ -52,8 +65,14 @@ function App() {
       return;
     }
     
+    if (winnersCount + reservesCount > participantList.length) {
+      alert('Kazanan + Yedek sayısı toplam katılımcı sayısından fazla olamaz!');
+      return;
+    }
+    
     setIsSpinning(true);
-    setWinner(null);
+    setWinners([]);
+    setReserves([]);
     setCurrentDisplay('');
     
     // Animasyon süresi (3 saniye)
@@ -65,10 +84,15 @@ function App() {
       const progress = elapsed / animationDuration;
       
       if (progress >= 1) {
-        // Animasyon bitti, kazananı göster
+        // Animasyon bitti, kazananları seç
         clearInterval(spinInterval);
-        const randomIndex = Math.floor(Math.random() * participantList.length);
-        setWinner(participantList[randomIndex]);
+        
+        const shuffled = [...participantList].sort(() => Math.random() - 0.5);
+        const selectedWinners = shuffled.slice(0, winnersCount);
+        const selectedReserves = shuffled.slice(winnersCount, winnersCount + reservesCount);
+        
+        setWinners(selectedWinners);
+        setReserves(selectedReserves);
         setIsSpinning(false);
       } else {
         // Rastgele isim göster
@@ -132,6 +156,50 @@ function App() {
           />
         </div>
         
+        <div className="count-selectors">
+          <div className="count-group">
+            <label className="count-label">{t.winnersCount}</label>
+            <div className="count-controls">
+              <button 
+                className="count-btn" 
+                onClick={() => setWinnersCount(Math.max(1, winnersCount - 1))}
+                disabled={winnersCount <= 1}
+              >
+                -
+              </button>
+              <span className="count-value">{winnersCount}</span>
+              <button 
+                className="count-btn" 
+                onClick={() => setWinnersCount(Math.min(participantList.length - reservesCount, winnersCount + 1))}
+                disabled={winnersCount >= participantList.length - reservesCount}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          
+          <div className="count-group">
+            <label className="count-label">{t.reservesCount}</label>
+            <div className="count-controls">
+              <button 
+                className="count-btn" 
+                onClick={() => setReservesCount(Math.max(0, reservesCount - 1))}
+                disabled={reservesCount <= 0}
+              >
+                -
+              </button>
+              <span className="count-value">{reservesCount}</span>
+              <button 
+                className="count-btn" 
+                onClick={() => setReservesCount(Math.min(participantList.length - winnersCount, reservesCount + 1))}
+                disabled={reservesCount >= participantList.length - winnersCount}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+        
         <button 
           className={`raffle-button ${isSpinning ? 'spinning' : ''}`} 
           onClick={handleRaffle}
@@ -140,7 +208,7 @@ function App() {
           {isSpinning ? '...' : t.initiateRaffle}
         </button>
         
-        {(isSpinning || winner) && (
+        {(isSpinning || winners.length > 0) && (
           <div className="raffle-display">
             {isSpinning ? (
               <div className="spinning-display">
@@ -149,12 +217,38 @@ function App() {
                 </div>
                 <div className="spinning-label">Çekiliş yapılıyor...</div>
               </div>
-            ) : winner ? (
-              <div className="winner-display">
-                <div className="winner-crown">👑</div>
-                <h2 className="winner-title">{t.winner}</h2>
-                <div className="winner-name">{winner}</div>
-                <div className="winner-celebration">🎉</div>
+            ) : winners.length > 0 ? (
+              <div className="results-display">
+                <h2 className="results-title">{t.results}</h2>
+                
+                {winners.length > 0 && (
+                  <div className="winners-section">
+                    <h3 className="section-title">{t.winners}</h3>
+                    <div className="winners-list">
+                      {winners.map((winner, index) => (
+                        <div key={index} className="winner-item">
+                          <span className="winner-number">{index + 1}</span>
+                          <span className="winner-name">{winner}</span>
+                          <span className="winner-crown">👑</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {reserves.length > 0 && (
+                  <div className="reserves-section">
+                    <h3 className="section-title">{t.reserves}</h3>
+                    <div className="reserves-list">
+                      {reserves.map((reserve, index) => (
+                        <div key={index} className="reserve-item">
+                          <span className="reserve-number">{index + 1}</span>
+                          <span className="reserve-name">{reserve}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ) : null}
           </div>
