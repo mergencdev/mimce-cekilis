@@ -26,7 +26,10 @@ const translations = {
     date: 'Tarih',
     lottery: 'Çekiliş',
     close: 'Kapat',
-    noHistory: 'Henüz çekiliş geçmişi yok'
+    noHistory: 'Henüz çekiliş geçmişi yok',
+    error: 'Hata',
+    ok: 'Tamam',
+    tooManyParticipantsError: 'Kazanan + Yedek sayısı toplam katılımcı sayısından fazla olamaz!'
   },
   en: {
     lotteryName: 'Lottery Name',
@@ -49,7 +52,10 @@ const translations = {
     date: 'Date',
     lottery: 'Lottery',
     close: 'Close',
-    noHistory: 'No raffle history yet'
+    noHistory: 'No raffle history yet',
+    error: 'Error',
+    ok: 'OK',
+    tooManyParticipantsError: 'Winners + Reserves count cannot exceed total participants!'
   }
 };
 
@@ -74,6 +80,8 @@ function App() {
   const [currentDisplay, setCurrentDisplay] = useState<string>('');
   const [showHistory, setShowHistory] = useState(false);
   const [raffleHistory, setRaffleHistory] = useState<RaffleHistory[]>([]);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -84,14 +92,19 @@ function App() {
     .map(p => p.trim())
     .filter(p => p.length > 0);
 
+  const showErrorDialog = (message: string) => {
+    setErrorMessage(message);
+    setShowError(true);
+  };
+
   const handleRaffle = () => {
     if (participantList.length === 0) {
-      alert(t.noParticipantsError);
+      showErrorDialog(t.noParticipantsError);
       return;
     }
     
     if (winnersCount + reservesCount > participantList.length) {
-      alert('Kazanan + Yedek sayısı toplam katılımcı sayısından fazla olamaz!');
+      showErrorDialog(t.tooManyParticipantsError);
       return;
     }
     
@@ -372,6 +385,39 @@ function App() {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Error Modal */}
+      {showError && (
+        <div className="modal-overlay" onClick={() => setShowError(false)}>
+          <div className="modal-content error-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header error-header">
+              <div className="error-icon">⚠️</div>
+              <h2 className="modal-title">{t.error}</h2>
+              <button 
+                className="modal-close"
+                onClick={() => setShowError(false)}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="modal-body">
+              <div className="error-message">
+                {errorMessage}
+              </div>
+              
+              <div className="error-actions">
+                <button 
+                  className="error-ok-btn"
+                  onClick={() => setShowError(false)}
+                >
+                  {t.ok}
+                </button>
+              </div>
             </div>
           </div>
         </div>
